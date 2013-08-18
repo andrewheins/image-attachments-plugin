@@ -1,0 +1,1 @@
+Please check which post types you would like to be able to attach images.
