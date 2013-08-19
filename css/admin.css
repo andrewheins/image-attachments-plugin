@@ -1,17 +1,34 @@
-/* This stylesheet is used to style the admin option form of the plugin. */
+/******************************
+ * Meta Box Styles
+ ******************************/
 
-.attached_images_list {
+.postbox#image-attachments .attached_images_list {
 	overflow: hidden;
 }
 
-.attached_images_list li {
+.postbox#image-attachments .attached_image_item {
 	position: relative;
 	display: block;
 	float: left;
-	margin: 20px;
+	margin: 16px;
+	border: solid 1px #dfdfdf;
+	padding: 5px;
+	-webkit-transition: border-color 0.3s ease;
+	-moz-transition: border-color 0.3s ease;
+	-ms-transition: border-color 0.3s ease;
+	-o-transition: border-color 0.3s ease;
+	transition: border-color 0.3s ease;
 }
 
-.attached_images_list li .remove {
+.postbox#image-attachments .attached_image_item:hover {
+	border-color: #bfbfbf;
+}
+
+.postbox#image-attachments .attached_image_item img { 
+	display: block;
+}
+
+.postbox#image-attachments .remove_attached_image_link {
 	position: absolute;
 	top: -5px;
 	right: -5px;
@@ -21,6 +38,18 @@
 	background: url( '/wp-admin/images/xit.gif' )no-repeat 0 0;
 }
 
-.attached_images_list li .remove:hover {
+.postbox#image-attachments .remove_attached_image_link:hover {
 	background: url( '/wp-admin/images/xit.gif' )no-repeat -10px 0;
 }
+
+.postbox#image-attachments .image_attachment_action_bar {
+	border-bottom: solid 1px #efefef;
+	margin-top: -6px;
+	margin-right: -12px;
+	margin-left: -10px;
+	padding: 5px;
+	overflow: hidden;
+}
+.postbox#image-attachments .image_attachment_action_label { float: left; line-height: 24px; font-weight: bold; }
+.postbox#image-attachments .image_attachment_action_buttons { float: right; }
+

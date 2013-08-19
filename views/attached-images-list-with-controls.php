@@ -13,7 +13,7 @@
 		
 		$image_tag = wp_get_attachment_image( $post->ID );
 		
-		echo( '<li>' . $image_tag . '<a href="#" class="remove" data-id="' . $post->ID . '">Remove</a></li>');
+		echo( '<li class="attached_image_item">' . $image_tag . '<a href="#" class="remove_attached_image_link" data-id="' . $post->ID . '">Remove</a></li>');
 		echo( '' );
 	} 
 	echo( '</ul>' );

@@ -56,6 +56,14 @@ class Image_Attachments {
 	 */
 	protected $plugin_screen_hook_suffix = null;
 	
+	
+	/**
+	 * List of any post types that should NEVER allow attachments
+	 *
+	 * @since    0.0.1
+	 *
+	 * @var      array
+	 */
 	private $forbidden_post_types = array(
 		'attachment',
 		'nav_menu_item',
@@ -70,35 +78,25 @@ class Image_Attachments {
 	 */
 	private function __construct() {
 
-		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		add_action( 'admin_init', 				array( $this, 'register_plugin_settings' ) );
+		add_action( 'admin_init', array( $this, 'register_plugin_settings' ) );
 
-		// Add the options page and menu item.
-		add_action( 'admin_menu', 				array( $this, 'add_plugin_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
-		// Load admin style sheet and JavaScript.
-		add_action( 'admin_enqueue_scripts', 	array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', 	array( $this, 'enqueue_admin_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
-		// Load public-facing style sheet and JavaScript.
-		add_action( 'wp_enqueue_scripts', 		array( $this, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', 		array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		
-		add_action( 'add_meta_boxes', 			array( $this, 'display_attachments_metabox' ) );
+		add_action( 'add_meta_boxes', array( $this, 'display_attachments_metabox' ) );		
 		
-		//add_action( 'save_post', 				array( $this, 'update_image_attachments' ) );
-		//add_action( 'save_post', 				array( $this, 'save_details' ) );
-		
-		
-		// AJAX Calls
 		add_action( 'wp_ajax_attach_images', array( $this, 'attach_images' ) );
 		add_action( 'wp_ajax_get_all_image_attachments', array( $this, 'get_all_image_attachments' ) );
 		add_action( 'wp_ajax_remove_image_attachment', array( $this, 'remove_image_attachment' ) );
 		add_action( 'wp_ajax_remove_all_attachments', array( $this, 'remove_all_attachments' ) );
 		
-
 	}
 
 	/**
@@ -116,28 +114,6 @@ class Image_Attachments {
 		}
 
 		return self::$instance;
-	}
-
-	/**
-	 * Fired when the plugin is activated.
-	 *
-	 * @since    0.0.1
-	 *
-	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Activate" action, false if WPMU is disabled or plugin is activated on an individual blog.
-	 */
-	public static function activate( $network_wide ) {
-		// TODO: Define activation functionality here
-	}
-
-	/**
-	 * Fired when the plugin is deactivated.
-	 *
-	 * @since    0.0.1
-	 *
-	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Deactivate" action, false if WPMU is disabled or plugin is deactivated on an individual blog.
-	 */
-	public static function deactivate( $network_wide ) {
-		// TODO: Define deactivation functionality here
 	}
 
 	/**
@@ -166,9 +142,14 @@ class Image_Attachments {
 		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
 			return;
 		}
-
-		$screen = get_current_screen();
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), $this->version );
+		
+		// We're going to load styles globally for now, namespace everything.
+		wp_enqueue_style( 
+			$this->plugin_slug .'-admin-styles', 
+			plugins_url( 'css/admin.css', __FILE__ ), 
+			array(), 
+			$this->version 
+		);
 
 	}
 
@@ -185,29 +166,14 @@ class Image_Attachments {
 			return;
 		}
 
-		// $screen = get_current_screen();
-		// if ( $screen->id == $this->plugin_screen_hook_suffix ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), $this->version );
-		// }
+		// We're going to load styles globally for now, namespace everything.
+		wp_enqueue_script( 
+			$this->plugin_slug . '-admin-script', 
+			plugins_url( 'js/admin.js', __FILE__ ), 
+			array( 'jquery' ), 
+			$this->version 
+		);
 
-	}
-
-	/**
-	 * Register and enqueue public-facing style sheet.
-	 *
-	 * @since    0.0.1
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'css/public.css', __FILE__ ), array(), $this->version );
-	}
-
-	/**
-	 * Register and enqueues public-facing JavaScript files.
-	 *
-	 * @since    0.0.1
-	 */
-	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'js/public.js', __FILE__ ), array( 'jquery' ), $this->version );
 	}
 
 	/**
@@ -217,13 +183,6 @@ class Image_Attachments {
 	 */
 	public function add_plugin_admin_menu() {
 
-		/*
-		 * TODO:
-		 *
-		 * Change 'Page Title' to the title of your plugin admin page
-		 * Change 'Menu Text' to the text for menu item for the plugin settings page
-		 * Change 'image-attachments' to the name of your plugin
-		 */
 		$this->plugin_screen_hook_suffix = add_plugins_page(
 			//__( 'Page Title', $this->plugin_slug ),
 			'Attachment Images',
@@ -236,11 +195,12 @@ class Image_Attachments {
 
 	}
 
-	/**
-	 * Render the settings page for this plugin.
-	 *
-	 * @since    0.0.1
-	 */
+
+
+	/******************************************************
+	 View Rendering Functions
+	 ******************************************************/
+	 
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
 	}
@@ -252,36 +212,36 @@ class Image_Attachments {
 	public function post_types_section_field() {
 		include_once( 'views/fields/post_types.php' );
 	}
-	
-	
-	
+
+
+
+	/******************************************************
+	 Settings
+	 ******************************************************/
+		
 	public function register_plugin_settings() { 
 		add_settings_section(  
-	        'post_types_section',        		// ID used to identify this section and with which to register options  
-	        'Post Types',                  		// Title to be displayed on the administration page  
-	        array( $this, 'post_types_section_description' ), 	// Callback used to render the description of the section  
-	        $this->plugin_slug                  // Page on which to add this section of options  
+	        'post_types_section',
+	        'Post Types',
+	        array( $this, 'post_types_section_description' ),
+	        $this->plugin_slug
 	    );  
 	    
 		add_settings_field(	
-			'ai_active_post_types',				// ID used to identify the field throughout the theme
-			'Active Post Types',				// The label to the left of the option interface element
-			array( $this, 'post_types_section_field' ),			// The name of the function responsible for rendering the option interface
-			$this->plugin_slug,					// The page on which this option will be displayed
-			'post_types_section'				// The name of the section to which this field belongs
+			'ai_active_post_types',
+			'Active Post Types',
+			array( $this, 'post_types_section_field' ),
+			$this->plugin_slug,
+			'post_types_section'
 		);
 		
 		register_setting( $this->plugin_slug, 'ai_active_post_types' );
 	}
-
-	/**
-	 * Updates image attachments for the saved post
-	 *
-	 * @since    0.0.1
-	 */
-	public function update_image_attachments() {
-		// TODO: Define your action hook callback here
-	}	
+	
+	
+	/******************************************************
+	 Admin Setup
+	 ******************************************************/
 	
 	public function display_attachments_metabox(){
 	 	$active_post_types = get_option( 'ai_active_post_types' );
@@ -314,20 +274,11 @@ class Image_Attachments {
 	
 	}
 	
-	public function save_details($post_id){
 	
-		global $post;
-		
-		if(isset($_POST['post_type']) && ($_POST['post_type'] == "csp_content_snippet")) {
-			foreach($_POST as $k => $v){
-				update_post_meta($post_id, $k, $v);
-			}
-		}
-		
-	}
-	
-	// AJAX Functions
-	
+	/******************************************************
+	 Attachment Management Functions
+	 ******************************************************/
+
 	public function get_all_image_attachments() {
 		global $wpdb;
 		
