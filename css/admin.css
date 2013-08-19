@@ -1,1 +1,26 @@
 /* This stylesheet is used to style the admin option form of the plugin. */
+
+.attached_images_list {
+	overflow: hidden;
+}
+
+.attached_images_list li {
+	position: relative;
+	display: block;
+	float: left;
+	margin: 20px;
+}
+
+.attached_images_list li .remove {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	text-indent: -9999px;
+	width: 10px;
+	height: 10px;
+	background: url( '/wp-admin/images/xit.gif' )no-repeat 0 0;
+}
+
+.attached_images_list li .remove:hover {
+	background: url( '/wp-admin/images/xit.gif' )no-repeat -10px 0;
+}

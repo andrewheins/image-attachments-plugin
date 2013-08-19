@@ -168,9 +168,7 @@ class Image_Attachments {
 		}
 
 		$screen = get_current_screen();
-		if ( $screen->id == $this->plugin_screen_hook_suffix ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), $this->version );
-		}
 
 	}
 
