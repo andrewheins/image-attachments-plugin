@@ -15,7 +15,6 @@ var IAP = IAP || {};
 			'url': ajaxurl,
 			'data': data,
 			'success': function(d, t, j) {
-				console.log( d );
 				IAP.refresh_attachments( post_id );
 			},
 	    });
@@ -34,7 +33,6 @@ var IAP = IAP || {};
 			'url': ajaxurl,
 			'data': data,
 			'success': function(d, t, j) {
-				console.log( d );
 				$( '#image-attachments .inside .attached_images' ).html( d );
 			},
 	    });
@@ -52,7 +50,6 @@ var IAP = IAP || {};
 			'url': ajaxurl,
 			'data': data,
 			'success': function(d, t, j) {
-				console.log( d );
 				IAP.refresh_attachments( post_id );
 			},
 	    });
@@ -70,7 +67,6 @@ var IAP = IAP || {};
 				'url': ajaxurl,
 				'data': data,
 				'success': function(d, t, j) {
-				console.log( d );	
 					IAP.refresh_attachments( post_id );
 				},
 		    });
@@ -87,7 +83,7 @@ var IAP = IAP || {};
             var selector = $( this ).selector	; // Get the selector
             // Set default options
             var defaults = {
-                'preview' : '.preview-upload',
+                'parent' : '#image-attachments .inside',
                 'text'    : '.text-upload',
                 'button'  : '.button-upload',
                 'remove'  : '.remove',
@@ -98,7 +94,7 @@ var IAP = IAP || {};
             var file_frame;
             
               // When the Button is clicked...
-		    $( options.button ).on( 'click', function( event ) {
+		    $( options.parent ).on( 'click', options.button, function( event ) {
 		    	event.preventDefault();
 	    	
 				var $button = $(this);
@@ -137,12 +133,12 @@ var IAP = IAP || {};
 		        file_frame.open();
 		    } );
 		    
-			$( options.remove ).on( 'click', function( event ) {
+			$( options.parent ).on( 'click', options.remove, function( event ) {
 			    IAP.remove_attachment( $('#post_ID').val(), $(this).data('id') );
 			    event.preventDefault();
 		    });
 		    
-		    $( options.remove_all ).on( 'click', function( event ) {
+		    $( options.parent ).on( 'click', options.remove_all, function( event ) {
 			    IAP.remove_all_attachments( $('#post_ID').val() );
 			    event.preventDefault();
 		    });
