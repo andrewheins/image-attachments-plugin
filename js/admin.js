@@ -35,7 +35,7 @@ var IAP = IAP || {};
 			'data': data,
 			'success': function(d, t, j) {
 				console.log( d );
-				$( '#image-attachments .inside' ).html( d );
+				$( '#image-attachments .inside .attached_images' ).html( d );
 			},
 	    });
 	};

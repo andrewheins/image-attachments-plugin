@@ -1,6 +1,4 @@
-<?php 
-	include_once( 'image-upload-button.php' );
-	
+<?php 	
 	$gallery_args = array(
 		'posts_per_page'   => -1,
 		'post_type'        => 'attachment',

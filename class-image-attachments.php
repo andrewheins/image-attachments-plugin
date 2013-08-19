@@ -308,7 +308,10 @@ class Image_Attachments {
 	public function image_attachments_metabox( $post ){
 		
 		if( $post ) {
+			include_once( 'views/image-upload-button.php' );
+			echo( '<div class="attached_images">' );
 			include_once( 'views/attached-images-list-with-controls.php' );
+			echo( '</div>' );
 		}
 	
 	}
