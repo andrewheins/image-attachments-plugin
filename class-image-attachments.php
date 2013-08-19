@@ -91,7 +91,13 @@ class Image_Attachments {
 		//add_action( 'save_post', 				array( $this, 'update_image_attachments' ) );
 		//add_action( 'save_post', 				array( $this, 'save_details' ) );
 		
-
+		
+		// AJAX Calls
+		add_action( 'wp_ajax_attach_images', array( $this, 'attach_images' ) );
+		add_action( 'wp_ajax_get_all_image_attachments', array( $this, 'get_all_image_attachments' ) );
+		add_action( 'wp_ajax_remove_image_attachment', array( $this, 'remove_image_attachment' ) );
+		add_action( 'wp_ajax_remove_all_attachments', array( $this, 'remove_all_attachments' ) );
+		
 
 	}
 
@@ -302,8 +308,7 @@ class Image_Attachments {
 	public function image_attachments_metabox( $post ){
 		
 		if( $post ) {
-			include_once( 'views/image-upload-button.php' );
-			include_once( 'views/attached-images-list.php' );
+			include_once( 'views/attached-images-list-with-controls.php' );
 		}
 	
 	}
@@ -320,7 +325,76 @@ class Image_Attachments {
 		
 	}
 	
+	// AJAX Functions
+	
+	public function get_all_image_attachments() {
+		global $wpdb;
+		
+		$post_id = $_POST['post_id'];
+		$post = get_post( $post_id );
 
+		echo( include( 'views/attached-images-list-with-controls.php' ) );
+		die();
+	}
+	
+	public function attach_images() {
+		global $wpdb;
+		
+		$images = $_POST['images'];
+		$post_id = $_POST['post_id'];
+		
+		foreach( $images as $img_id ) {
+			$post = get_post( $img_id );
+			$this->set_post_parent( $post, $post_id );
+		}
+		
+		// Do Stuff 
+		echo( $post_id );
+		die();
+	}
+	
+	public function remove_image_attachment() {
+		global $wpdb;
+		
+		$attachment_id = $_POST['attachment_id'];
+		$post_id = $_POST['post_id'];
+		
+		$post = get_post( $attachment_id );
+		$post = $this->remove_post_parent( $post );		
+		
+		// Do Stuff 
+		echo( $post->ID );
+		die();
+	}
+	
+	public function remove_all_attachments() {
+		global $wpdb;
+		
+		$post_id = $_POST['post_id'];
+		
+		$attachment_args = array(
+			'posts_per_page'   => -1,
+			'post_type'        => 'attachment',
+			'post_parent'      => $post_id,
+		);
+		$attachments = get_posts( $attachment_args );
+		
+		foreach ( $attachments as $post ) {
+			$post = $this->remove_post_parent( $post );
+		}
 
-
+		echo( $post->ID );
+		die();
+	}
+	
+	private function set_post_parent( $post, $id ) {
+		$post->post_parent = $id;
+		wp_update_post( $post );
+		return $post;
+	}
+	
+	private function remove_post_parent( $post ) {
+		return $this->set_post_parent( $post, null );
+	}
+	
 }

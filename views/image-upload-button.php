@@ -1,4 +1,4 @@
 <div class="uploader">
-	<input type='text' id='image-attachments-uploader-label' class='regular-text text-upload' name='image-attachments-uploader-label' />
-    <input type='button' id='image-attachments-uploader-button' class='button button-upload' value='Upload an image'/>
+    <input type='button' id='image-attachments-uploader-button' class='button button-upload' value='Add Attachments'/>
+    <input type='button' id='image-attachments-remove-all-button' class='button button-danger remove_all' value='Remove All Attachments'/>
 </div>
