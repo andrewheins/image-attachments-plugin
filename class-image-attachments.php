@@ -86,9 +86,6 @@ class Image_Attachments {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		
 		add_action( 'add_meta_boxes', array( $this, 'display_attachments_metabox' ) );		
 		
