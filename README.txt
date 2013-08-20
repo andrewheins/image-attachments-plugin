@@ -1,1 +1,0 @@
-Need to find a way to list all post types and identify which ones should have image attachments enabled
