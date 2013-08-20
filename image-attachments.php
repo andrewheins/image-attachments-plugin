@@ -39,3 +39,23 @@ register_deactivation_hook( __FILE__, array( 'Image_Attachments', 'deactivate' )
 
 // TODO: replace Image_Attachments with the name of the plugin defined in `class-image-attachments.php`
 Image_Attachments::get_instance();
+
+/******************************************************
+ Theme Utility Functions
+ ******************************************************/
+
+if(! function_exists( 'get_all_attachments' ) ) {
+	function get_all_attachments( $id ) {
+		global $post;
+		if(! isset( $id ) ) {
+			$id = $post->ID;
+		}
+		
+		$att_args = array(
+			'posts_per_page'   => -1,
+			'post_type'        => 'attachment',
+			'post_parent'      => $id,
+		);
+		return get_posts( $att_args );
+	}
+}
