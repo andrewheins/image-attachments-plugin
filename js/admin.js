@@ -86,7 +86,7 @@ var IAP = IAP || {};
                 'parent' : '#image-attachments .inside',
                 'text'    : '.text-upload',
                 'button'  : '.button-upload',
-                'remove'  : '.remove',
+                'remove'  : '.remove_attached_image_link',
                 'remove_all': '.remove_all',
             };
             var options  = $.extend( defaults, options );
